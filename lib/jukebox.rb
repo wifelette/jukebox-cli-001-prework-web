@@ -1,9 +1,8 @@
 require "colorize"
 
 def start_game(songs)
-  puts "Please enter a command:"
+  puts "Enter a command:"
   reply = gets.chomp.downcase.strip
-  p reply
   game(reply, songs)
 end
 
@@ -12,19 +11,19 @@ def say_hello(users_name, songs)
   start_game(songs)
 end
 
-def help
+def help(songs)
   puts "I accept the following commands:"
-  puts "help: I'll list out all the things I can do... like I'm doing now!"
-  puts "play: I can play a song of your choosing"
-  puts "list: I can tell you all the songs I know how to play"
-  puts "exit: We'll stop chit chatting and you'll exit the jukebox"
-  # start_game(songs)
+  puts "— help: I'll list out all the things I can do... like I'm doing now!"
+  puts "— play: I can play a song of your choosing"
+  puts "— list: I can tell you all the songs I know how to play"
+  puts "— exit: We'll stop chit chatting and you'll exit the jukebox"
+  start_game(songs)
 end
 
 def list(songs)
   puts "Sure thing! These are the songs I can play:"
   puts songs
-  # start_game(songs)
+  start_game(songs)
 end
 
 def play(songs)
@@ -39,25 +38,24 @@ def play(songs)
     if songs.include?(song_request)
       puts "Playing song #{song_request}"
     else
-      puts "Invalid input, please try again"
+      puts "Sorry, that's not a song name we recognize."
       puts
-      # play(songs)
+      play(songs)
     end
   else # the song was provided as a number
     if song_number <= songs.length
       puts "Playing song #{songs[song_number - 1]}"
     else
-      puts "Invalid input, please try again"
+      puts "Sorry, we don't have that many songs in our catalog!"
       puts
-      # play(songs)
+      play(songs)
     end
   end
 end
 
-def exit_jukebox
-  # puts "Alright, it's been fun. Ciao for now!"
-  puts "Goodbye"
-  # exit
+def exit_game
+  puts "Alright, it's been fun. Ciao for now!"
+  exit
 end
 
 def exit_option(songs)
@@ -66,7 +64,7 @@ def exit_option(songs)
   if exit_answer == "yes"
     start_game(songs)
   elsif exit_answer == "no"
-    exit_jukebox
+    exit_game
   else
     exit_option(songs)
   end
@@ -74,16 +72,13 @@ end
 
 def game(reply, songs)
   if reply == "help"
-    help
-    # start_game(songs)
+    help(songs)
   elsif reply == "list"
     list(songs)
-    start_game(songs)
   elsif reply == "play"
     play(songs)
-    start_game(songs)
   elsif reply == "exit"
-    exit_jukebox
+    exit_game
   else
     exit_option(songs)
   end
@@ -91,11 +86,11 @@ end
 
 trap(:INT) do
 puts
-  exit_jukebox
+  exit_game
 end
 
 def run(songs)
-  # puts "Hi! What's your name?"
-  # users_name = gets.chomp
-  say_hello("Leah", songs)
+  puts "Hi! What's your name?"
+  users_name = gets.chomp
+  say_hello(users_name, songs)
 end
